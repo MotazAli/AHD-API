@@ -1,0 +1,26 @@
+{
+  "name": "ahd-api",
+  "version": "1.0.0",
+  "description": "its Web API for Aikido Home Dojo website",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MotazAli/AHD-API.git"
+  },
+  "author": "Motaz Ali - Aion company",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MotazAli/AHD-API/issues"
+  },
+  "homepage": "https://github.com/MotazAli/AHD-API#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mysql2": "^2.1.0",
+    "reflect-metadata": "^0.1.13",
+    "sequelize": "^5.21.8",
+    "tedious": "^8.0.0"
+  }
+}
