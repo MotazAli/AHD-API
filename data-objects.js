@@ -2,6 +2,20 @@
 const {Sequelize,sequelizeConnection} = require('./db');
 const Model = Sequelize.Model;
 
+
+const ScheduleDays ={
+  SATURDAY: { id: 1 , name: "Saturday",data: [] } ,
+  SUNDAY: { id: 2 , name: "Sunday" ,data: [] },
+  MONDAY: { id: 3 , name: "Monday" ,data: []},
+  TUESDAY: { id: 4 , name: "Tuesday" ,data: [] },
+  WEDNESDAY: { id: 5 , name: "Wednesday",data: [] },
+  THURSDAY: { id: 6 , name: "Thursday" ,data: []},
+  FRIDAY: { id: 7 , name: "Friday",data: [] }
+}
+
+
+
+
 ////////////////////////////////////////////////////////////
 //////////User Types///////////////////////////////////////
 class UserTypes extends Model {};
@@ -52,7 +66,106 @@ ContactMessages.init({
 }, { sequelize: sequelizeConnection, modelName: 'ContactMessages' });
 
 
+////////////////////////////////////////////////////
+////////////Contact ////////////////////////////////
+class Contacts extends Model{}
+Contacts.init({
+  ID:{
+    type:Sequelize.BIGINT,
+    primaryKey: true,
+    autoIncrement:true
+  },
+  Name:{type:Sequelize.STRING},
+  Phone:{type:Sequelize.STRING},
+  Email:{type:Sequelize.STRING},
+  IsPrimary:{type:Sequelize.BOOLEAN},
+  CreatedBy:{type:Sequelize.BIGINT},
+  ModifiedBy:{type:Sequelize.BIGINT},
+  CreationDate:{
+    type:Sequelize.TIME,
+    defaultValue: new Date().toISOString()
+},
+ModifiedDate:{
+  type:Sequelize.TIME,
+  defaultValue: new Date().toISOString()
+}
+},{sequelize : sequelizeConnection, modelName:'Contacts'});
 
-module.exports = {UserTypes ,ContactMessages};
+
+
+
+////////////////////////////////////////////////////
+////////////Schedules ////////////////////////////////
+class Schedules extends Model{}
+Schedules.init({
+  ID:{
+    type:Sequelize.BIGINT,
+    primaryKey: true,
+    autoIncrement:true
+  },
+  Place:{type:Sequelize.STRING},
+  TeamTypeID:{type:Sequelize.BIGINT},
+  StartTime:{type:Sequelize.STRING},
+  EndTime:{type:Sequelize.STRING},
+  DayID:{type:Sequelize.BIGINT},
+  Image:{type:Sequelize.STRING},
+  CreatedBy:{type:Sequelize.BIGINT},
+  ModifiedBy:{type:Sequelize.BIGINT},
+  CreationDate:{
+    type:Sequelize.TIME,
+    defaultValue: new Date().toISOString()
+},
+ModifiedDate:{
+  type:Sequelize.TIME,
+  defaultValue: new Date().toISOString()
+}
+},{sequelize : sequelizeConnection, modelName:'Schedules'});
+
+
+
+////////////////////////////////////////////////////
+////////////Team Types ////////////////////////////////
+class TeamTypes extends Model{}
+TeamTypes.init({
+  ID:{
+    type:Sequelize.BIGINT,
+    primaryKey: true,
+    autoIncrement:true
+  },
+  Type:{type:Sequelize.INTEGER},
+  Name:{type:Sequelize.STRING},
+ 
+},{sequelize : sequelizeConnection, modelName:'TeamTypes'});
+
+
+
+////////////////////////////////////////////////////
+////////////Team Types ////////////////////////////////
+class Days extends Model{}
+Days.init({
+  ID:{
+    type:Sequelize.BIGINT,
+    primaryKey: true,
+    autoIncrement:true
+  },
+  Name:{type:Sequelize.STRING},
+ 
+},{sequelize : sequelizeConnection, modelName:'Days'});
+
+//////////////////////////////////////////////////////
+//////////// relations ///////////////////////////////
+TeamTypes.hasOne(Schedules,{foreignKey: 'TeamTypeID'});
+Schedules.belongsTo(TeamTypes);
+
+
+Days.hasOne(Schedules,{foreignKey: 'DayID'});
+Schedules.belongsTo(Days);
+
+// Schedules.hasMany(TeamTypes, {
+//   foreignKey: 'TeamType'
+// });
+// TeamTypes.belongsTo(Schedules,{foreignKey: 'ID'});
+
+module.exports = {UserTypes ,ContactMessages,Contacts,Schedules,TeamTypes,Days, ScheduleDays};
 
 

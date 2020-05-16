@@ -4,6 +4,9 @@ const app = express();
 const bodyParser = require('body-parser');
 const {UserTypes,ContactMessages} = require('./data-objects');
 const {contactMessagesRouter} = require('./routes/contact-messages-route');
+const {contactsRouter} = require('./routes/contact-route');
+const {schedulesRouter} = require('./routes/schedule-route');
+
 // const Connection = require('tedious').Connection;
 
 // const connection = new Connection({
@@ -106,8 +109,12 @@ app.get('/', (req,res)=>{
 //     console.error('Unable to connect to the database:', err);
 //   });
 });
-
+app.use('/assets/schedule',express.static(__dirname + '/assets/schedule'));
+app.use('/assets/team',express.static(__dirname + '/assets/team'));
+app.use('/Schedules',schedulesRouter);
 app.use('/ContactMessage',contactMessagesRouter);
+app.use('/Contacts',contactsRouter);
+
 
 const port = 2404;
 app.listen(port,()=>{
