@@ -14,6 +14,51 @@ const ScheduleDays ={
 }
 
 
+////////////////////////////////////////////////////////////
+//////////User///////////////////////////////////////
+class Users extends Model {};
+Users.init({
+  ID: {
+      type :Sequelize.BIGINT,
+      primaryKey : true,
+      autoIncrement : true
+},
+  FullName:{
+    type:Sequelize.STRING
+  },
+  Username:{
+    type:Sequelize.STRING
+  },
+  Password:{
+    type:Sequelize.STRING
+  },
+  Email:{
+    type:Sequelize.STRING
+  },
+  Gender:{
+    type:Sequelize.STRING
+  },
+  Image:{
+    type:Sequelize.STRING
+  },
+  UserTypeID: {
+    type : Sequelize.BIGINT
+  },
+  Token:{
+    type:Sequelize.STRING
+  },
+  TokenExpiresIn:{
+    type:Sequelize.BIGINT
+  },
+  CreationDate:{
+    type:Sequelize.TIME,
+    defaultValue: new Date().toISOString()
+}
+
+}, { sequelize: sequelizeConnection, modelName: 'Users' });
+
+
+
 
 
 ////////////////////////////////////////////////////////////
@@ -161,11 +206,14 @@ Schedules.belongsTo(TeamTypes);
 Days.hasOne(Schedules,{foreignKey: 'DayID'});
 Schedules.belongsTo(Days);
 
+UserTypes.hasOne(Schedules,{foreignKey: 'UserTypeID'});
+Users.belongsTo(UserTypes);
+
 // Schedules.hasMany(TeamTypes, {
 //   foreignKey: 'TeamType'
 // });
 // TeamTypes.belongsTo(Schedules,{foreignKey: 'ID'});
 
-module.exports = {UserTypes ,ContactMessages,Contacts,Schedules,TeamTypes,Days, ScheduleDays};
+module.exports = {Users,UserTypes ,ContactMessages,Contacts,Schedules,TeamTypes,Days, ScheduleDays};
 
 
