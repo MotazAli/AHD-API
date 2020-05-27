@@ -4,30 +4,41 @@ const {Users,UserTypes} = require('./data-objects');
 const jwtKey = "Aion";
 const jwtExpirySeconds = 1800 // 1800 is half hour in seconds  //3600 is an hour in seconds //
 
-exports.authorization = async (req, res, next)=>{
-    if(req.url === '/Users/Login' || req.url === '/Users/Logout'){
-      next();
+exports.authorization =  (req, res, next)=>{
+    
+    if(req.originalUrl === '/' || 
+    req.originalUrl === '/Users/Login' || 
+    req.originalUrl === '/Users/Logout' || 
+    req.originalUrl.includes('assets')){ 
+       return next(); 
     }
-    else{
-      const authHeader = req.headers['authorization'];
-      const token = authHeader && authHeader.split(' ')[1];
-      if (token === null) return res.sendStatus(401); // if there isn't any token
+    
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    if (token === null || token === undefined) return res.sendStatus(401); // if there isn't any token
   
+    getUserByToken(token).then(user =>{
+        if (user === null || user === undefined) return res.sendStatus(401); // if there isn't any user with that token
   
-      const user = await Users.findOne({ where:{Token : token } , include:[ {model : UserTypes} ]   });
-      if (user === null) return res.sendStatus(401); // if there isn't any user with that token
-  
-      jwt.verify(token, jwtKey, (err) => {
-        console.log(err)
-        if (err) return res.sendStatus(403);
-        next(); // pass the execution off to whatever request the client intended
-      });
-    }
+        jwt.verify(token, jwtKey, (err) => {
+          if (err) return res.sendStatus(403);
+          return next(); // pass the execution off to whatever request the client intended
+        });
+    });
   
   };
 
 
+const getUserByToken = async (token)=>{
+    
+    if(token !== null || token !== undefined){
+        const user =await Users.findOne({ where:{Token : token } , include:[ {model : UserTypes} ]   });
+        return user;
+    }
 
+    return null;
+
+};
 
 
 

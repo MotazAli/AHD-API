@@ -206,7 +206,7 @@ Schedules.belongsTo(TeamTypes);
 Days.hasOne(Schedules,{foreignKey: 'DayID'});
 Schedules.belongsTo(Days);
 
-UserTypes.hasOne(Schedules,{foreignKey: 'UserTypeID'});
+UserTypes.hasOne(Users,{foreignKey: 'UserTypeID'});
 Users.belongsTo(UserTypes);
 
 // Schedules.hasMany(TeamTypes, {
