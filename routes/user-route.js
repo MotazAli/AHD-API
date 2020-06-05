@@ -30,8 +30,8 @@ router.post("/Login",(req,res)=>{
     });
 });
 
-router.get("/Logout",(req,res)=>{
-    logoutUser(1).then((data)=>{ 
+router.post("/Logout",(req,res)=>{
+    logoutUser(req.body).then((data)=>{ 
         if(data !== null) {
             res.status(200).send(JSON.stringify({result : true ,message : "Successful" }));
         }

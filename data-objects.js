@@ -167,6 +167,33 @@ ModifiedDate:{
 },{sequelize : sequelizeConnection, modelName:'Schedules'});
 
 
+////////////////////////////////////////////////////
+////////////Teams ////////////////////////////////
+class Teams extends Model{}
+Teams.init({
+  ID:{
+    type:Sequelize.BIGINT,
+    primaryKey: true,
+    autoIncrement:true
+  },
+  Name:{type:Sequelize.STRING},
+  Image:{type:Sequelize.STRING},
+  TeamTypeID:{type:Sequelize.BIGINT},
+  FacebookURL:{type:Sequelize.STRING},
+  InstagramURL:{type:Sequelize.STRING},
+  CreatedBy:{type:Sequelize.BIGINT},
+  ModifiedBy:{type:Sequelize.BIGINT},
+  CreationDate:{
+    type:Sequelize.TIME,
+    defaultValue: new Date().toISOString()
+},
+ModifiedDate:{
+  type:Sequelize.TIME,
+  defaultValue: new Date().toISOString()
+}
+},{sequelize : sequelizeConnection, modelName:'Teams'});
+
+
 
 ////////////////////////////////////////////////////
 ////////////Team Types ////////////////////////////////
@@ -185,7 +212,7 @@ TeamTypes.init({
 
 
 ////////////////////////////////////////////////////
-////////////Team Types ////////////////////////////////
+////////////Days ////////////////////////////////
 class Days extends Model{}
 Days.init({
   ID:{
@@ -197,10 +224,17 @@ Days.init({
  
 },{sequelize : sequelizeConnection, modelName:'Days'});
 
+
+
+
+
 //////////////////////////////////////////////////////
 //////////// relations ///////////////////////////////
 TeamTypes.hasOne(Schedules,{foreignKey: 'TeamTypeID'});
 Schedules.belongsTo(TeamTypes);
+
+TeamTypes.hasOne(Teams,{foreignKey: 'TeamTypeID'});
+Teams.belongsTo(TeamTypes);
 
 
 Days.hasOne(Schedules,{foreignKey: 'DayID'});
@@ -214,6 +248,6 @@ Users.belongsTo(UserTypes);
 // });
 // TeamTypes.belongsTo(Schedules,{foreignKey: 'ID'});
 
-module.exports = {Users,UserTypes ,ContactMessages,Contacts,Schedules,TeamTypes,Days, ScheduleDays};
+module.exports = {Users,UserTypes ,ContactMessages,Contacts,Schedules,TeamTypes,Days, ScheduleDays,Teams};
 
 

@@ -6,12 +6,12 @@ const jwtExpirySeconds = 1800 // 1800 is half hour in seconds  //3600 is an hour
 
 exports.authorization =  (req, res, next)=>{
     
-    if(req.originalUrl === '/' || 
-    req.originalUrl === '/Users/Login' || 
-    req.originalUrl === '/Users/Logout' || 
-    req.originalUrl.includes('assets')){ 
-       return next(); 
-    }
+    // if(req.originalUrl === '/' || 
+    // req.originalUrl === '/Users/Login' || 
+    // req.originalUrl === '/Users/Logout' || 
+    // req.originalUrl.includes('assets')){ 
+    //    return next(); 
+    // }
     
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
@@ -22,7 +22,7 @@ exports.authorization =  (req, res, next)=>{
   
         jwt.verify(token, jwtKey, (err) => {
           if (err) return res.sendStatus(403);
-          return next(); // pass the execution off to whatever request the client intended
+          return next(); 
         });
     });
   
@@ -69,10 +69,10 @@ const getUserByToken = async (token)=>{
 };
 
 
-exports.logoutUser =async (userId)=>{
+exports.logoutUser =async ({ID})=>{
 
     try {
-        let user = await Users.findOne({ where:{ID : userId } , include:[ {model : UserTypes} ]   });
+        let user = await Users.findOne({ where:{ID : ID } , include:[ {model : UserTypes} ]   });
         if(user)
         {
             user.Token = "";
